@@ -44,7 +44,7 @@
                 android:ems="10"
                 android:gravity="top"
                 android:hint="@string/description_hint"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine|textPersonName"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/edTitle"
@@ -52,4 +52,85 @@
                 app:layout_constraintTop_toBottomOf="@+id/edTitle" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:id="@+id/colorPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#D6D1D1"
+        android:elevation="10dp"
+        android:orientation="horizontal"
+        android:padding="3dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/imRed"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    app:srcCompat="@color/picker_red" />
+
+                <ImageButton
+                    android:id="@+id/imOrange"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    app:srcCompat="@color/picker_orange" />
+
+                <ImageButton
+                    android:id="@+id/imBlue"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    app:srcCompat="@color/picker_blue" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/imGreen"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    app:srcCompat="@color/picker_green" />
+
+                <ImageButton
+                    android:id="@+id/imYellow"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    app:srcCompat="@color/picker_yellow" />
+
+                <ImageButton
+                    android:id="@+id/imBlack"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="3dp"
+                    android:background="@null"
+                    app:srcCompat="@color/picker_black" />
+            </TableRow>
+
+        </TableLayout>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

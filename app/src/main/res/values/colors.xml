@@ -6,6 +6,14 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="green_main">#10B14B</color>
+    <color name="green_main_dark">#067A31</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="picker_red">#FA0101</color>
+    <color name="picker_green">#03E35A</color>
+    <color name="picker_blue">#146AED</color>
+    <color name="picker_black">#292929</color>
+    <color name="picker_yellow">#DAA609</color>
+    <color name="picker_orange">#D126AC</color>
 </resources>
