@@ -12,15 +12,19 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dimas_ok.shoppinglist.R
 import dimas_ok.shoppinglist.activities.MainApp
 import dimas_ok.shoppinglist.activities.NewNoteActivity
 import dimas_ok.shoppinglist.databinding.FragmentNoteBinding
 import dimas_ok.shoppinglist.db.MainViewModel
+import dimas_ok.shoppinglist.db.NoteAdapter
+import dimas_ok.shoppinglist.entities.NoteItem
 
-class NoteFragment : BaseFragment() {
+class NoteFragment : BaseFragment() , NoteAdapter.Listener {
     private lateinit var binding: FragmentNoteBinding
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
+    private lateinit var adapter: NoteAdapter
 
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
@@ -42,22 +46,42 @@ class NoteFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRcView()
+        observer()
+    }
+    private fun initRcView () = with(binding){
+        rcViewNote.layoutManager = LinearLayoutManager(activity)
+        adapter = NoteAdapter(this@NoteFragment)
+        rcViewNote.adapter = adapter
+    }
+    private fun observer(){
+        mainViewModel.allNotes.observe(viewLifecycleOwner, adapter::submitList
+//            {
+//            adapter.submitList(it)
+//        }
+        )
+    }
+
     private fun onEditResult(){
         editLauncher = registerForActivityResult(
             ActivityResultContracts.StartActivityForResult()){
                 if(it.resultCode == Activity.RESULT_OK){
-                    Log.d("MyLog", "title: ${it.data?.getStringExtra(TITLE_KEY)}")
-                    Log.d("MyLog", "description: ${it.data?.getStringExtra(DESC_KEY)}")
+                    mainViewModel.insertNote(it.data?.getSerializableExtra(NEW_NOTE_KEY) as NoteItem)
                 }
             }
 
     }
 
     companion object {
-        const val TITLE_KEY = "title_key"
-        const val DESC_KEY = "desc_key"
+        const val NEW_NOTE_KEY = "new_note_key"
         @JvmStatic
         fun newInstance() = NoteFragment()
 
+    }
+
+    override fun deleteItem(id: Int) {
+        mainViewModel.deleteNote(id)
     }
 }
