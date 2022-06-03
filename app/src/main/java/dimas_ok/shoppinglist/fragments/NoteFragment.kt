@@ -21,7 +21,7 @@ import dimas_ok.shoppinglist.db.MainViewModel
 import dimas_ok.shoppinglist.db.NoteAdapter
 import dimas_ok.shoppinglist.entities.NoteItem
 
-class NoteFragment : BaseFragment() , NoteAdapter.Listener {
+class NoteFragment : BaseFragment(), NoteAdapter.Listener {
     private lateinit var binding: FragmentNoteBinding
     private lateinit var editLauncher: ActivityResultLauncher<Intent>
     private lateinit var adapter: NoteAdapter
@@ -29,6 +29,7 @@ class NoteFragment : BaseFragment() , NoteAdapter.Listener {
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
     }
+
     override fun onClickNew() {
         editLauncher.launch(Intent(activity, NewNoteActivity::class.java))
     }
@@ -42,7 +43,7 @@ class NoteFragment : BaseFragment() , NoteAdapter.Listener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        binding = FragmentNoteBinding.inflate(inflater, container, false )
+        binding = FragmentNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -51,12 +52,14 @@ class NoteFragment : BaseFragment() , NoteAdapter.Listener {
         initRcView()
         observer()
     }
-    private fun initRcView () = with(binding){
+
+    private fun initRcView() = with(binding) {
         rcViewNote.layoutManager = LinearLayoutManager(activity)
         adapter = NoteAdapter(this@NoteFragment)
         rcViewNote.adapter = adapter
     }
-    private fun observer(){
+
+    private fun observer() {
         mainViewModel.allNotes.observe(viewLifecycleOwner, adapter::submitList
 //            {
 //            adapter.submitList(it)
@@ -64,24 +67,38 @@ class NoteFragment : BaseFragment() , NoteAdapter.Listener {
         )
     }
 
-    private fun onEditResult(){
+    private fun onEditResult() {
         editLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()){
-                if(it.resultCode == Activity.RESULT_OK){
+            ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val editState = it.data?.getStringExtra(EDIT_STATE_KEY)
+                if (editState == "update") {
+                    mainViewModel.updateNote(it.data?.getSerializableExtra(NEW_NOTE_KEY) as NoteItem)
+                } else {
                     mainViewModel.insertNote(it.data?.getSerializableExtra(NEW_NOTE_KEY) as NoteItem)
                 }
             }
+        }
+    }
 
+
+    override fun deleteItem(id: Int) {
+        mainViewModel.deleteNote(id)
+    }
+
+    override fun onClickItem(note: NoteItem) {
+        val intent = Intent(activity, NewNoteActivity::class.java).apply {
+            putExtra(NEW_NOTE_KEY, note)
+        }
+        editLauncher.launch(intent)
     }
 
     companion object {
         const val NEW_NOTE_KEY = "new_note_key"
+        const val EDIT_STATE_KEY = "edit_state_key"
+
         @JvmStatic
         fun newInstance() = NoteFragment()
 
-    }
-
-    override fun deleteItem(id: Int) {
-        mainViewModel.deleteNote(id)
     }
 }
