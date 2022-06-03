@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity (tableName = "shopping_list_names")
-data class ShoppingListNames(
+data class ShoppingListName(
     @PrimaryKey(autoGenerate = true)
     val id: Int?,
 
@@ -17,10 +17,10 @@ data class ShoppingListNames(
     val time: String,
 
     @ColumnInfo (name = "allItemCounter")
-    val allItemCounter: String,
+    val allItemCounter: Int,
 
     @ColumnInfo (name = "checkedItemsCounter")
-    val checkedItemsCounter: String,
+    val checkedItemsCounter: Int,
 
     @ColumnInfo (name = "itemsIds")
     val itemsIds: String,

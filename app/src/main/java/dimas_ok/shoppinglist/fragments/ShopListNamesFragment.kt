@@ -1,7 +1,6 @@
 package dimas_ok.shoppinglist.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,8 @@ import dimas_ok.shoppinglist.activities.MainApp
 import dimas_ok.shoppinglist.databinding.FragmentShopListNamesBinding
 import dimas_ok.shoppinglist.db.MainViewModel
 import dimas_ok.shoppinglist.dialogs.NewListDialog
+import dimas_ok.shoppinglist.entities.ShoppingListName
+import dimas_ok.shoppinglist.utils.TimeManager
 
 class ShopListNamesFragment : BaseFragment() {
     private lateinit var binding: FragmentShopListNamesBinding
@@ -23,7 +24,16 @@ class ShopListNamesFragment : BaseFragment() {
     override fun onClickNew() {
         NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener {
             override fun onClick(name: String) {
-                Log.d("MyLog" , "Name: $name" )
+                val shopListName = ShoppingListName(
+                    null,
+                    name,
+                    TimeManager.getCurrentTime(),
+                    0,
+                    0,
+                    ""
+                )
+                mainViewModel.insertShopListName(shopListName)
+
             }
 
         })
@@ -53,11 +63,11 @@ class ShopListNamesFragment : BaseFragment() {
     }
 
     private fun observer() {
-       // mainViewModel.allNotes.observe(viewLifecycleOwner, //adapter::submitList
-//            {
+       mainViewModel.allShopListName.observe(viewLifecycleOwner, //adapter::submitList
+            {
 //            adapter.submitList(it)
-//        }
-      //  )
+      }
+       )
     }
 
 
