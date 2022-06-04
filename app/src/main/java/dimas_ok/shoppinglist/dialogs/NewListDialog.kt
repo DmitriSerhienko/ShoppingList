@@ -3,6 +3,7 @@ package dimas_ok.shoppinglist.dialogs
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import dimas_ok.shoppinglist.R
 import dimas_ok.shoppinglist.databinding.NewListDialogBinding
 
 object NewListDialog {
@@ -12,6 +13,8 @@ object NewListDialog {
         val binding = NewListDialogBinding.inflate(LayoutInflater.from(context))
         builder.setView(binding.root)
         binding.apply {
+            edNewListName.setText(name)
+            if(name.isNotEmpty()) bCreate.text = context.getString(R.string.update)
             bCreate.setOnClickListener {
                 val listName = edNewListName.text.toString()
                 if(listName.isNotEmpty()){
