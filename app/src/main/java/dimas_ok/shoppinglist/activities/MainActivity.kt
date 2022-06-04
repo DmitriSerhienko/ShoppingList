@@ -34,8 +34,9 @@ class MainActivity : AppCompatActivity(),  NewListDialog.Listener {
                     FragmentManager.setFragment(ShopListNamesFragment.newInstance(), this)
                 }
                 R.id.new_item -> {
-                   //FragmentManager.currentFrag?.onClickNew()
-                    NewListDialog.showDialog(this, this)
+                    //NewListDialog.showDialog(this, this)
+                    FragmentManager.currentFrag?.onClickNew()
+
                 }
             }
             true

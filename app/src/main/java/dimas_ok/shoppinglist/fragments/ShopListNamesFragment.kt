@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import dimas_ok.shoppinglist.activities.MainApp
 import dimas_ok.shoppinglist.databinding.FragmentShopListNamesBinding
 import dimas_ok.shoppinglist.db.MainViewModel
+import dimas_ok.shoppinglist.db.ShopListNameAdapter
 import dimas_ok.shoppinglist.dialogs.NewListDialog
 import dimas_ok.shoppinglist.entities.ShoppingListName
 import dimas_ok.shoppinglist.utils.TimeManager
 
 class ShopListNamesFragment : BaseFragment() {
     private lateinit var binding: FragmentShopListNamesBinding
-
+    private lateinit var adapter: ShopListNameAdapter
 
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModel.MainViewModelFactory((context?.applicationContext as MainApp).database)
@@ -33,9 +35,7 @@ class ShopListNamesFragment : BaseFragment() {
                     ""
                 )
                 mainViewModel.insertShopListName(shopListName)
-
             }
-
         })
     }
 
@@ -59,14 +59,16 @@ class ShopListNamesFragment : BaseFragment() {
     }
 
     private fun initRcView() = with(binding) {
-
+        rcView.layoutManager = LinearLayoutManager(activity)
+        adapter = ShopListNameAdapter()
+        rcView.adapter = adapter
     }
 
     private fun observer() {
-       mainViewModel.allShopListName.observe(viewLifecycleOwner, //adapter::submitList
-            {
+       mainViewModel.allShopListNames.observe(viewLifecycleOwner, adapter::submitList
+//            {
 //            adapter.submitList(it)
-      }
+//      }
        )
     }
 
