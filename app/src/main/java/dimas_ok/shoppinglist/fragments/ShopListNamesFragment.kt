@@ -11,11 +11,13 @@ import dimas_ok.shoppinglist.activities.MainApp
 import dimas_ok.shoppinglist.databinding.FragmentShopListNamesBinding
 import dimas_ok.shoppinglist.db.MainViewModel
 import dimas_ok.shoppinglist.db.ShopListNameAdapter
+import dimas_ok.shoppinglist.dialogs.DeleteDialog
 import dimas_ok.shoppinglist.dialogs.NewListDialog
+import dimas_ok.shoppinglist.entities.NoteItem
 import dimas_ok.shoppinglist.entities.ShoppingListName
 import dimas_ok.shoppinglist.utils.TimeManager
 
-class ShopListNamesFragment : BaseFragment() {
+class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
     private lateinit var binding: FragmentShopListNamesBinding
     private lateinit var adapter: ShopListNameAdapter
 
@@ -60,7 +62,7 @@ class ShopListNamesFragment : BaseFragment() {
 
     private fun initRcView() = with(binding) {
         rcView.layoutManager = LinearLayoutManager(activity)
-        adapter = ShopListNameAdapter()
+        adapter = ShopListNameAdapter(this@ShopListNamesFragment)
         rcView.adapter = adapter
     }
 
@@ -79,6 +81,27 @@ class ShopListNamesFragment : BaseFragment() {
 
         @JvmStatic
         fun newInstance() = ShopListNamesFragment()
+
+    }
+
+    override fun deleteItem(id: Int) {
+        DeleteDialog.deleteDialog(context as AppCompatActivity, object : DeleteDialog.Listener{
+            override fun onClick() {
+                mainViewModel.deleteShopListName(id)
+            }
+        })
+    }
+
+    override fun editItem(shopListName: ShoppingListName) {
+        NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener {
+            override fun onClick(name: String) {
+                mainViewModel.updateListName(shopListName.copy(name = name))
+            }
+        })
+    }
+
+
+    override fun onClickItem(shopListName: ShoppingListName) {
 
     }
 }

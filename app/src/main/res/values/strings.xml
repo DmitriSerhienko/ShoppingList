@@ -8,7 +8,9 @@
     <string name="description_hint">Description</string>
     <string name="new_list">New list Name</string>
     <string name="list_name">List Name</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="create_list">Create list</string>
+    <string name="delete_alert">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete_item">Do you want delete this item?</string>
 
 </resources>
