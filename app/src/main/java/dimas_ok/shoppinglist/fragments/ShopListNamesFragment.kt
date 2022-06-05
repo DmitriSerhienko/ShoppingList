@@ -13,8 +13,7 @@ import dimas_ok.shoppinglist.db.MainViewModel
 import dimas_ok.shoppinglist.db.ShopListNameAdapter
 import dimas_ok.shoppinglist.dialogs.DeleteDialog
 import dimas_ok.shoppinglist.dialogs.NewListDialog
-import dimas_ok.shoppinglist.entities.NoteItem
-import dimas_ok.shoppinglist.entities.ShoppingListName
+import dimas_ok.shoppinglist.entities.ShopListNameItem
 import dimas_ok.shoppinglist.utils.TimeManager
 
 class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
@@ -28,7 +27,7 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
     override fun onClickNew() {
         NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener {
             override fun onClick(name: String) {
-                val shopListName = ShoppingListName(
+                val shopListName = ShopListNameItem(
                     null,
                     name,
                     TimeManager.getCurrentTime(),
@@ -67,7 +66,7 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
     }
 
     private fun observer() {
-       mainViewModel.allShopListNames.observe(viewLifecycleOwner, adapter::submitList
+       mainViewModel.allShopListNamesItem.observe(viewLifecycleOwner, adapter::submitList
 //            {
 //            adapter.submitList(it)
 //      }
@@ -92,16 +91,16 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
         })
     }
 
-    override fun editItem(shopListName: ShoppingListName) {
+    override fun editItem(shopListNameItem: ShopListNameItem) {
         NewListDialog.showDialog(activity as AppCompatActivity, object : NewListDialog.Listener {
             override fun onClick(name: String) {
-                mainViewModel.updateListName(shopListName.copy(name = name))
+                mainViewModel.updateListName(shopListNameItem.copy(name = name))
             }
-        },shopListName.name)
+        },shopListNameItem.name)
     }
 
 
-    override fun onClickItem(shopListName: ShoppingListName) {
+    override fun onClickItem(shopListNameItem: ShopListNameItem) {
 
     }
 }
