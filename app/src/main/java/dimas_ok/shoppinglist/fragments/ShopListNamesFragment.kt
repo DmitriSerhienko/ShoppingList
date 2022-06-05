@@ -1,5 +1,6 @@
 package dimas_ok.shoppinglist.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import dimas_ok.shoppinglist.activities.MainApp
+import dimas_ok.shoppinglist.activities.ShopListActivity
 import dimas_ok.shoppinglist.databinding.FragmentShopListNamesBinding
 import dimas_ok.shoppinglist.db.MainViewModel
 import dimas_ok.shoppinglist.db.ShopListNameAdapter
@@ -101,6 +103,9 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
 
 
     override fun onClickItem(shopListNameItem: ShopListNameItem) {
-
+        val i = Intent(activity, ShopListActivity::class.java).apply {
+            putExtra(ShopListActivity.SHOP_LIST_NAME, shopListNameItem)
+        }
+        startActivity(i)
     }
 }

@@ -24,17 +24,17 @@ class ShopListNameAdapter(private val listener: Listener) :
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListNameItemBinding.bind(view)
 
-        fun setData(shopListNameItemItem: ShopListNameItem, listener: Listener) = with(binding) {
-            tvListName.text = shopListNameItemItem.name
-            tvTime.text = shopListNameItemItem.time
+        fun setData(shopListNameItem: ShopListNameItem, listener: Listener) = with(binding) {
+            tvListName.text = shopListNameItem.name
+            tvTime.text = shopListNameItem.time
             itemView.setOnClickListener {
-
+                listener.onClickItem(shopListNameItem)
             }
             imDelete.setOnClickListener {
-                listener.deleteItem(shopListNameItemItem.id!!)
+                listener.deleteItem(shopListNameItem.id!!)
             }
             imEdit.setOnClickListener {
-                listener.editItem(shopListNameItemItem)
+                listener.editItem(shopListNameItem)
             }
         }
 

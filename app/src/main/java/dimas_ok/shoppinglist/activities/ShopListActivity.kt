@@ -19,10 +19,12 @@ class ShopListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityShopListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        init()
     }
 
     private fun init() {
         shopListNameItem = intent.getSerializableExtra(SHOP_LIST_NAME) as ShopListNameItem
+        binding.tvTest.text = shopListNameItem?.name
     }
 
     companion object{
