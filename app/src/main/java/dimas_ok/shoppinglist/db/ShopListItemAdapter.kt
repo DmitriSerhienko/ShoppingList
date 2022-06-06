@@ -9,33 +9,40 @@ import androidx.recyclerview.widget.RecyclerView
 import dimas_ok.shoppinglist.R
 import dimas_ok.shoppinglist.databinding.ListNameItemBinding
 import dimas_ok.shoppinglist.entities.ShopListNameItem
+import dimas_ok.shoppinglist.entities.ShoppingListItem
 
 class ShopListItemAdapter(private val listener: Listener) :
-    ListAdapter<ShopListNameItem, ShopListItemAdapter.ItemHolder>(ItemComparator()) {
+    ListAdapter<ShoppingListItem, ShopListItemAdapter.ItemHolder>(ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
-        return ItemHolder.create(parent)
+        return  if (viewType == 0)
+                    ItemHolder.createShopItem(parent)
+                else
+                    ItemHolder.createLibraryItem(parent)
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        holder.setData(getItem(position), listener)
+        if (getItem(position).itemType == 0) {
+            holder.setItemData(getItem(position), listener)
+        } else {
+            holder.setLibraryData(getItem(position), listener)
+        }
+
     }
+
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position).itemType
+    }
+
 
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ListNameItemBinding.bind(view)
 
-        fun setData(shopListNameItem: ShopListNameItem, listener: Listener) = with(binding) {
-            tvListName.text = shopListNameItem.name
-            tvTime.text = shopListNameItem.time
-            itemView.setOnClickListener {
-                listener.onClickItem(shopListNameItem)
-            }
-            imDelete.setOnClickListener {
-                listener.deleteItem(shopListNameItem.id!!)
-            }
-            imEdit.setOnClickListener {
-                listener.editItem(shopListNameItem)
-            }
+        fun setItemData(shopListItem: ShoppingListItem, listener: Listener) = with(binding) {
+
+        }
+        fun setLibraryData(shopListItem: ShoppingListItem, listener: Listener) = with(binding) {
+
         }
 
         companion object {
@@ -50,17 +57,17 @@ class ShopListItemAdapter(private val listener: Listener) :
         }
     }
 
-    class ItemComparator : DiffUtil.ItemCallback<ShopListNameItem>() {
+    class ItemComparator : DiffUtil.ItemCallback<ShoppingListItem>() {
         override fun areItemsTheSame(
-            oldItem: ShopListNameItem,
-            newItem: ShopListNameItem,
+            oldItem: ShoppingListItem,
+            newItem: ShoppingListItem,
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: ShopListNameItem,
-            newItem: ShopListNameItem,
+            oldItem: ShoppingListItem,
+            newItem: ShoppingListItem,
         ): Boolean {
             return oldItem == newItem
         }
