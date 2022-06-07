@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/drawable/ic_delete.xml" value="0.1515" />
+        <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/drawable/ic_delete_library_item.xml" value="0.1515" />
+        <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/drawable/ic_edit_library.xml" value="0.1515" />
+        <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/drawable/ic_edit_list.xml" value="0.1515" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_main.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_new_note.xml" value="0.21608757734412185" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_shop_list.xml" value="0.23645833333333333" />
@@ -14,6 +17,7 @@
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/list_name_item.xml" value="0.41379310344827586" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/new_list_dialog.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/note_list_item.xml" value="0.4" />
+        <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/shop_library_list_item.xml" value="0.4" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/shop_list_item.xml" value="0.536" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/menu/bottom_meny.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/menu/nw_note_menu.xml" value="0.23645833333333333" />

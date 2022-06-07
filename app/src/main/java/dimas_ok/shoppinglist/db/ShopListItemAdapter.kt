@@ -8,11 +8,12 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dimas_ok.shoppinglist.R
 import dimas_ok.shoppinglist.databinding.ListNameItemBinding
+import dimas_ok.shoppinglist.databinding.ShopListItemBinding
 import dimas_ok.shoppinglist.entities.ShopListNameItem
-import dimas_ok.shoppinglist.entities.ShoppingListItem
+import dimas_ok.shoppinglist.entities.ShopListItem
 
 class ShopListItemAdapter(private val listener: Listener) :
-    ListAdapter<ShoppingListItem, ShopListItemAdapter.ItemHolder>(ItemComparator()) {
+    ListAdapter<ShopListItem, ShopListItemAdapter.ItemHolder>(ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         return  if (viewType == 0)
@@ -35,39 +36,42 @@ class ShopListItemAdapter(private val listener: Listener) :
     }
 
 
-    class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val binding = ListNameItemBinding.bind(view)
+    class ItemHolder( val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun setItemData(shopListItem: ShoppingListItem, listener: Listener) = with(binding) {
 
+        fun setItemData(shopListItem: ShopListItem, listener: Listener)  {
+            val binding = ShopListItemBinding.bind(view)
+            binding.apply{
+                tvName.text = shopListItem.name
+            }
         }
-        fun setLibraryData(shopListItem: ShoppingListItem, listener: Listener) = with(binding) {
+        fun setLibraryData(shopListItem: ShopListItem, listener: Listener) {
 
         }
 
         companion object {
             fun createShopItem(parent: ViewGroup): ItemHolder {
                 return ItemHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_name_item, parent, false))
+                    .inflate(R.layout.shop_list_item, parent, false))
             }
             fun createLibraryItem(parent: ViewGroup): ItemHolder {
                 return ItemHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_name_item, parent, false))
+                    .inflate(R.layout.shop_list_item, parent, false))
             }
         }
     }
 
-    class ItemComparator : DiffUtil.ItemCallback<ShoppingListItem>() {
+    class ItemComparator : DiffUtil.ItemCallback<ShopListItem>() {
         override fun areItemsTheSame(
-            oldItem: ShoppingListItem,
-            newItem: ShoppingListItem,
+            oldItem: ShopListItem,
+            newItem: ShopListItem,
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: ShoppingListItem,
-            newItem: ShoppingListItem,
+            oldItem: ShopListItem,
+            newItem: ShopListItem,
         ): Boolean {
             return oldItem == newItem
         }
