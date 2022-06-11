@@ -23,6 +23,9 @@ class MainViewModel(database: MainDataBase) : ViewModel() {
     fun insertShopItem(ShopListItem: ShopListItem) = viewModelScope.launch {
         dao.insertItem(ShopListItem)
     }
+    fun updateListItem(item: ShopListItem) = viewModelScope.launch {
+        dao.updateListItem(item)
+    }
     fun updateNote(note: NoteItem) = viewModelScope.launch {
         dao.updateNote(note)
     }
