@@ -3,6 +3,9 @@ package dimas_ok.shoppinglist.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +17,7 @@ import dimas_ok.shoppinglist.databinding.ActivityShopListBinding
 import dimas_ok.shoppinglist.db.MainViewModel
 import dimas_ok.shoppinglist.db.ShopListItemAdapter
 import dimas_ok.shoppinglist.dialogs.EditListItemDialog
+import dimas_ok.shoppinglist.entities.LibraryItem
 import dimas_ok.shoppinglist.entities.ShopListItem
 import dimas_ok.shoppinglist.entities.ShopListNameItem
 import dimas_ok.shoppinglist.utils.SharHelper
@@ -24,6 +28,7 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     private lateinit var saveItem: MenuItem
     private var edItem: EditText? = null
     private var adapter: ShopListItemAdapter? = null
+    private lateinit var textWatcher: TextWatcher
 
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.MainViewModelFactory((applicationContext as MainApp).database)
@@ -46,8 +51,44 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         edItem = newItem.actionView.findViewById(R.id.edNewShopItem) as EditText
         newItem.setOnActionExpandListener(expandActionView())
         saveItem.isVisible = false
+        textWatcher = textWatcher()
         return true
     }
+
+    private fun textWatcher(): TextWatcher{
+        return object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                Log.d( "MyLog", "On Text Changed: $p0")
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+
+            }
+        }
+    }
+//    private fun textWatcher(): TextWatcher {
+//        return object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//                Log.d( "MyLog", "On Text Changed: $s")
+//                mainViewModel.getAllLibraryItems("%$s%")
+////                mainViewModel.getAllLibraryItems("%$s%")
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//
+//            }
+//
+//        }
+//    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -95,6 +136,46 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             }
         }
     }
+    private fun libraryItemObserver(){
+        mainViewModel.libraryItems.observe(this) {
+        val tempShopList = ArrayList<ShopListItem>()
+            it.forEach { item ->
+                val shopItem = ShopListItem(
+                    item.id,
+                    item.name,
+                    "",
+                    false,
+                    0,
+                    1
+                )
+                tempShopList.add(shopItem)
+            }
+            adapter?.submitList(tempShopList)
+        }
+    }
+
+//    private fun libraryItemObserver() {
+//        mainViewModel.libraryItems.observe(this) {
+//            val tempShopList = ArrayList<ShopListItem>()
+//            it.forEach { item ->
+//                val shopItem = ShopListItem(
+//                    item.id,
+//                    item.name,
+//                    "",
+//                    false,
+//                    0,
+//                    1  ////// 1
+//                )
+//                tempShopList.add(shopItem)
+//            }
+//            adapter?.submitList(tempShopList)
+//            binding.tvEmpty.visibility = if (it.isEmpty()) {
+//                View.VISIBLE
+//            } else {
+//                View.GONE
+//            }
+//        }
+//    }
 
     private fun initRcView() = with(binding) {
         adapter = ShopListItemAdapter(this@ShopListActivity)
@@ -106,12 +187,27 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         return object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 saveItem.isVisible = true
+                edItem?.addTextChangedListener(textWatcher)
+                libraryItemObserver()
+                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).removeObservers(this@ShopListActivity)
+                mainViewModel.getAllLibraryItems("%%")
+//                libraryItemObserver()
+//                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!)
+//                    .removeObservers(this@ShopListActivity)
+//                mainViewModel.getAllLibraryItems("%%")
                 return true
             }
 
             override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
                 saveItem.isVisible = false
+                edItem?.removeTextChangedListener(textWatcher)
                 invalidateOptionsMenu()
+                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
+                edItem?.setText(" ")
+                listItemObserver()
+//                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
+//                edItem?.setText("")
+//                listItemObserver()
                 return true
             }
 
@@ -132,6 +228,11 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         when (state) {
             ShopListItemAdapter.CHECK_BOX -> mainViewModel.updateListItem(shopListItem)
             ShopListItemAdapter.EDIT -> editListItem(shopListItem)
+            ShopListItemAdapter.EDIT_LIBRARY_ITEM -> editLibraryItem(shopListItem)
+            ShopListItemAdapter.DELETE_LIBRARY_ITEM -> {
+                mainViewModel.deleteLibraryItem(shopListItem.id!!)
+                mainViewModel.getAllLibraryItems("%${edItem?.text.toString()}%")
+            }
         }
 
     }
@@ -140,6 +241,16 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         EditListItemDialog.showDialog(this, item, object : EditListItemDialog.Listener {
             override fun onClick(item: ShopListItem) {
                 mainViewModel.updateListItem(item)
+            }
+
+        })
+    }
+
+    private fun editLibraryItem(item: ShopListItem) {
+        EditListItemDialog.showDialog(this, item, object : EditListItemDialog.Listener {
+            override fun onClick(item: ShopListItem) {
+                mainViewModel.updateLibraryItem(LibraryItem(item.id, item.name))
+                mainViewModel.getAllLibraryItems("%${edItem?.text.toString()}%")
             }
 
         })

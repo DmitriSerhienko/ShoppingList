@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import dimas_ok.shoppinglist.R
 import dimas_ok.shoppinglist.databinding.ListNameItemBinding
+import dimas_ok.shoppinglist.databinding.ShopLibraryListItemBinding
 import dimas_ok.shoppinglist.databinding.ShopListItemBinding
 import dimas_ok.shoppinglist.entities.ShopListNameItem
 import dimas_ok.shoppinglist.entities.ShopListItem
@@ -58,7 +59,16 @@ class ShopListItemAdapter(private val listener: Listener) :
             }
         }
         fun setLibraryData(shopListItem: ShopListItem, listener: Listener) {
-
+            val binding = ShopLibraryListItemBinding.bind(view)
+            binding.apply{
+                tvName.text = shopListItem.name
+                imEdit.setOnClickListener {
+                    listener.onClickItem(shopListItem, EDIT_LIBRARY_ITEM)
+                }
+                imDelete.setOnClickListener {
+                    listener.onClickItem(shopListItem, DELETE_LIBRARY_ITEM)
+                }
+            }
         }
         private fun setPaintFlagAndColor(binding: ShopListItemBinding){
             binding.apply{
@@ -118,6 +128,8 @@ class ShopListItemAdapter(private val listener: Listener) :
     companion object{
         const val EDIT = 0
         const val CHECK_BOX = 1
+        const val EDIT_LIBRARY_ITEM = 2
+        const val DELETE_LIBRARY_ITEM  = 3
     }
 
 }
