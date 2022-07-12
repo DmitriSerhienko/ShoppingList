@@ -1,5 +1,6 @@
 package dimas_ok.shoppinglist.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -15,6 +16,7 @@ import dimas_ok.shoppinglist.db.ShopListItemAdapter
 import dimas_ok.shoppinglist.dialogs.EditListItemDialog
 import dimas_ok.shoppinglist.entities.ShopListItem
 import dimas_ok.shoppinglist.entities.ShopListNameItem
+import dimas_ok.shoppinglist.utils.SharHelper
 
 class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     private lateinit var binding: ActivityShopListBinding
@@ -48,14 +50,29 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.save_item) {
-            addNewShopItem()
+        when (item.itemId) {
+            R.id.save_item -> {
+                addNewShopItem()
+            }
+            R.id.delete_list -> {
+                mainViewModel.deleteShopList(shopListNameItem?.id!!, true)
+                finish()
+            }
+            R.id.clear_list -> {
+                mainViewModel.deleteShopList(shopListNameItem?.id!!, false)
+            }
+            R.id.shar_list -> {
+                startActivity(Intent.createChooser(
+                    SharHelper.shareShopList(adapter?.currentList!!, shopListNameItem?.name!!),
+                    "Share by"
+                ))
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun addNewShopItem(){
-        if(edItem?.text.toString().isEmpty()) return
+    private fun addNewShopItem() {
+        if (edItem?.text.toString().isEmpty()) return
         val item = ShopListItem(
             null,
             edItem?.text.toString(),
@@ -67,10 +84,11 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         edItem?.setText("")
         mainViewModel.insertShopItem(item)
     }
-    private fun listItemObserver(){
+
+    private fun listItemObserver() {
         mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).observe(this) {
             adapter?.submitList(it)
-            binding.tvEmpty.visibility = if(it.isEmpty()){
+            binding.tvEmpty.visibility = if (it.isEmpty()) {
                 View.VISIBLE
             } else {
                 View.GONE
@@ -84,8 +102,8 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         rcView.adapter = adapter
     }
 
-    private fun expandActionView(): MenuItem.OnActionExpandListener{
-        return object : MenuItem.OnActionExpandListener{
+    private fun expandActionView(): MenuItem.OnActionExpandListener {
+        return object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 saveItem.isVisible = true
                 return true
@@ -105,22 +123,21 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
 
     }
 
-    companion object{
+    companion object {
         const val SHOP_LIST_NAME = "shop_list_name"
     }
 
 
-
     override fun onClickItem(shopListItem: ShopListItem, state: Int) {
-        when(state){
+        when (state) {
             ShopListItemAdapter.CHECK_BOX -> mainViewModel.updateListItem(shopListItem)
             ShopListItemAdapter.EDIT -> editListItem(shopListItem)
         }
 
     }
 
-    private fun editListItem (item: ShopListItem){
-        EditListItemDialog.showDialog(this, item, object: EditListItemDialog.Listener{
+    private fun editListItem(item: ShopListItem) {
+        EditListItemDialog.showDialog(this, item, object : EditListItemDialog.Listener {
             override fun onClick(item: ShopListItem) {
                 mainViewModel.updateListItem(item)
             }
