@@ -69,9 +69,7 @@ class ShopListNamesFragment : BaseFragment(), ShopListNameAdapter.Listener {
 
     private fun observer() {
        mainViewModel.allShopListNamesItem.observe(viewLifecycleOwner, adapter::submitList
-//            {
-//            adapter.submitList(it)
-//      }
+
        )
     }
 

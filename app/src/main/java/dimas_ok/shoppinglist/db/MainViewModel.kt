@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 class MainViewModel(database: MainDataBase) : ViewModel() {
     val dao = database.getDao()
     val libraryItems = MutableLiveData<List<LibraryItem>>()
-    //val libraryItems = MutableLiveData<List<LibraryItem>>()
     val allNotes: LiveData<List<NoteItem>> = dao.getAllNotes().asLiveData()
     val allShopListNamesItem: LiveData<List<ShopListNameItem>> =
         dao.getAllShopListNames().asLiveData()
@@ -23,9 +22,6 @@ class MainViewModel(database: MainDataBase) : ViewModel() {
          libraryItems.postValue(dao.getAllLibraryItems(name))
     }
 
-//    fun getAllLibraryItems(name: String) = viewModelScope.launch{
-//        libraryItems.postValue(dao.getAllLibraryItems(name))
-//    }
 
     fun insertNote(note: NoteItem) = viewModelScope.launch {
         dao.insertNote(note)
@@ -37,7 +33,7 @@ class MainViewModel(database: MainDataBase) : ViewModel() {
 
     fun insertShopItem(shopListItem: ShopListItem) = viewModelScope.launch {
         dao.insertItem(shopListItem)
-        if (!isLibraryItemExist(shopListItem.name)) dao.insertLibraryItem(LibraryItem(null,
+        if (!isLibraryItemExists(shopListItem.name)) dao.insertLibraryItem(LibraryItem(null,
             shopListItem.name))
     }
 
@@ -70,7 +66,7 @@ class MainViewModel(database: MainDataBase) : ViewModel() {
         dao.deleteShopItemsByListId(id)
     }
 
-    private suspend fun isLibraryItemExist(name: String): Boolean {
+    private suspend fun isLibraryItemExists(name: String): Boolean {
         return dao.getAllLibraryItems(name).isNotEmpty()
     }
 

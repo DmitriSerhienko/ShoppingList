@@ -56,39 +56,22 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     }
 
     private fun textWatcher(): TextWatcher{
-        return object : TextWatcher {
+        return object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 Log.d( "MyLog", "On Text Changed: $p0")
+                mainViewModel.getAllLibraryItems("%$p0%")
             }
 
             override fun afterTextChanged(p0: Editable?) {
 
             }
+
         }
     }
-//    private fun textWatcher(): TextWatcher {
-//        return object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                Log.d( "MyLog", "On Text Changed: $s")
-//                mainViewModel.getAllLibraryItems("%$s%")
-////                mainViewModel.getAllLibraryItems("%$s%")
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//
-//            }
-//
-//        }
-//    }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -136,46 +119,24 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             }
         }
     }
-    private fun libraryItemObserver(){
-        mainViewModel.libraryItems.observe(this) {
-        val tempShopList = ArrayList<ShopListItem>()
-            it.forEach { item ->
-                val shopItem = ShopListItem(
-                    item.id,
-                    item.name,
-                    "",
-                    false,
-                    0,
-                    1
-                )
-                tempShopList.add(shopItem)
-            }
-            adapter?.submitList(tempShopList)
-        }
-    }
-
-//    private fun libraryItemObserver() {
+//    private fun libraryItemObserver(){
 //        mainViewModel.libraryItems.observe(this) {
-//            val tempShopList = ArrayList<ShopListItem>()
+//        val tempShopList = ArrayList<ShopListItem>()
 //            it.forEach { item ->
 //                val shopItem = ShopListItem(
 //                    item.id,
 //                    item.name,
 //                    "",
-//                    false,
+//                    true,
 //                    0,
-//                    1  ////// 1
+//                    1
 //                )
 //                tempShopList.add(shopItem)
 //            }
 //            adapter?.submitList(tempShopList)
-//            binding.tvEmpty.visibility = if (it.isEmpty()) {
-//                View.VISIBLE
-//            } else {
-//                View.GONE
-//            }
 //        }
 //    }
+
 
     private fun initRcView() = with(binding) {
         adapter = ShopListItemAdapter(this@ShopListActivity)
@@ -188,12 +149,8 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 saveItem.isVisible = true
                 edItem?.addTextChangedListener(textWatcher)
-                libraryItemObserver()
-                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).removeObservers(this@ShopListActivity)
-                mainViewModel.getAllLibraryItems("%%")
 //                libraryItemObserver()
-//                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!)
-//                    .removeObservers(this@ShopListActivity)
+//                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!).removeObservers(this@ShopListActivity)
 //                mainViewModel.getAllLibraryItems("%%")
                 return true
             }
@@ -202,11 +159,8 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
                 saveItem.isVisible = false
                 edItem?.removeTextChangedListener(textWatcher)
                 invalidateOptionsMenu()
-                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
-                edItem?.setText(" ")
-                listItemObserver()
 //                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
-//                edItem?.setText("")
+//                edItem?.setText(" ")
 //                listItemObserver()
                 return true
             }
