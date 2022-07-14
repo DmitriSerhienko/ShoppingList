@@ -1,5 +1,6 @@
 package dimas_ok.shoppinglist.db
 
+import android.content.SharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,31 +11,34 @@ import dimas_ok.shoppinglist.R
 import dimas_ok.shoppinglist.databinding.NoteListItemBinding
 import dimas_ok.shoppinglist.entities.NoteItem
 import dimas_ok.shoppinglist.utils.HtmlManager
+import dimas_ok.shoppinglist.utils.TimeManager
 
-class NoteAdapter(private val listener: Listener) : ListAdapter<NoteItem, NoteAdapter.ItemHolder>(ItemComparator()) {
+class NoteAdapter(private val listener: Listener, private val defPref: SharedPreferences) :
+    ListAdapter<NoteItem, NoteAdapter.ItemHolder>(ItemComparator()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
         return ItemHolder.create(parent)
     }
 
     override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-        holder.setData(getItem(position), listener)
+        holder.setData(getItem(position), listener, defPref)
     }
 
     class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = NoteListItemBinding.bind(view)
 
-        fun setData(note: NoteItem, listener: Listener) = with(binding) {
-            tvTitle.text = note.title
-            tvDescription.text = HtmlManager.getFromHtml(note.content)?.trim()
-            tvTime.text = note.time
-            itemView.setOnClickListener {
-                listener.onClickItem(note)
+        fun setData(note: NoteItem, listener: Listener, defPref: SharedPreferences) =
+            with(binding) {
+                tvTitle.text = note.title
+                tvDescription.text = HtmlManager.getFromHtml(note.content)?.trim()
+                tvTime.text = TimeManager.getTimeFormat(note.time, defPref)
+                itemView.setOnClickListener {
+                    listener.onClickItem(note)
+                }
+                imDelete.setOnClickListener {
+                    listener.deleteItem(note.id!!)
+                }
             }
-            imDelete.setOnClickListener{
-                listener.deleteItem(note.id!!)
-            }
-        }
 
         companion object {
             fun create(parent: ViewGroup): ItemHolder {
@@ -53,7 +57,8 @@ class NoteAdapter(private val listener: Listener) : ListAdapter<NoteItem, NoteAd
             return oldItem == newItem
         }
     }
-    interface Listener{
+
+    interface Listener {
         fun deleteItem(id: Int)
         fun onClickItem(note: NoteItem)
     }
