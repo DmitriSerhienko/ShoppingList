@@ -9,6 +9,7 @@
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/drawable/ic_edit_list.xml" value="0.1515" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_main.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_new_note.xml" value="0.21608757734412185" />
+        <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_settings.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/activity_shop_list.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/delete_dialog.xml" value="0.4" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/layout/edit_action_layout.xml" value="0.23645833333333333" />
@@ -23,6 +24,7 @@
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/menu/bottom_meny.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/menu/nw_note_menu.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/menu/shop_list_menu.xml" value="0.23645833333333333" />
+        <entry key="..\:/Users/38093/AndroidStudioProjects/ShoppingList/app/src/main/res/xml/settings_preferences.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

@@ -12,6 +12,17 @@
     <string name="delete_alert">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="update">Update</string>
+    <string name="general">General</string>
+    <string name="chose_note_style">Chose note style</string>
+    <string name="chose_time_format">Chose time format</string>
     <string name="delete_item">Do you want delete this item?</string>
+    <string name="remove_ads">Remove ads</string>
+    <string name="remove_ads_summery">Remove all ads from this app</string>
+    <string name="theme_settings">Theme settings</string>
+    <string name="chose_theme">Chose theme</string>
+    <string name="note_text_settings">Note text settings</string>
+    <string name="title_test_size">Title text size</string>
+    <string name="content_test_size">Content text size</string>
+
 
 </resources>
