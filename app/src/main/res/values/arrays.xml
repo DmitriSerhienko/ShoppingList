@@ -18,11 +18,11 @@
     </string-array>
     <string-array name="chose_theme_array">
         <item>Blue theme</item>
-        <item>Green theme</item>
+        <item>Pink theme</item>
     </string-array>
     <string-array name="chose_theme_value">
         <item>Blue</item>
-        <item>Green</item>
+        <item>Red</item>
     </string-array>
     <string-array name="text_size_array">
         <item>12 sp</item>

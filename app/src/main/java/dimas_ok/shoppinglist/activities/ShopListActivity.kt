@@ -31,12 +31,15 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     private var edItem: EditText? = null
     private var adapter: ShopListItemAdapter? = null
     private lateinit var textWatcher: TextWatcher
+    private lateinit var defPref: SharedPreferences
 
     private val mainViewModel: MainViewModel by viewModels {
         MainViewModel.MainViewModelFactory((applicationContext as MainApp).database)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        defPref = PreferenceManager.getDefaultSharedPreferences(this)
+        setTheme(getSelectedTheme())
         super.onCreate(savedInstanceState)
         binding = ActivityShopListBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -230,6 +233,13 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
     override fun onBackPressed() {
         saveItemCount()
         super.onBackPressed()
+    }
+    private fun getSelectedTheme(): Int{
+        return if(defPref.getString("theme_key", "Blue") == "Blue"){
+            R.style.Theme_NewNoteBlue
+        } else {
+            R.style.Theme_NewNoteRed
+        }
     }
 
 }

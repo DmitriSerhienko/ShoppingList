@@ -30,7 +30,7 @@
     <PreferenceCategory android:title="@string/theme_settings">
 
         <ListPreference
-            android:defaultValue="1"
+            android:defaultValue="Blue"
             android:entries="@array/chose_theme_array"
             android:entryValues="@array/chose_theme_value"
             android:key="theme_key"
