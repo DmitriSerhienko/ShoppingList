@@ -125,23 +125,23 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
         }
     }
 
-//    private fun libraryItemObserver() {
-//        mainViewModel.libraryItems.observe(this) {
-//            val tempShopList = ArrayList<ShopListItem>()
-//            it.forEach { item ->
-//                val shopItem = ShopListItem(
-//                    item.id,
-//                    item.name,
-//                    "",
-//                    true,
-//                    0,
-//                    1
-//                )
-//                tempShopList.add(shopItem)
-//            }
-//            adapter?.submitList(tempShopList)
-//        }
-//    }
+    private fun libraryItemObserver() {
+        mainViewModel.libraryItems.observe(this) {
+            val tempShopList = ArrayList<ShopListItem>()
+            it.forEach { item ->
+                val shopItem = ShopListItem(
+                    item.id,
+                    item.name,
+                    "",
+                    true,
+                    0,
+                    1
+                )
+                tempShopList.add(shopItem)
+            }
+            adapter?.submitList(tempShopList)
+        }
+    }
 
 
     private fun initRcView() = with(binding) {
@@ -155,10 +155,10 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
             override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
                 saveItem.isVisible = true
                 edItem?.addTextChangedListener(textWatcher)
-//                libraryItemObserver()
-//                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!)
-//                    .removeObservers(this@ShopListActivity)
-//                mainViewModel.getAllLibraryItems("%%")
+                libraryItemObserver()
+                mainViewModel.getAllItemsFromList(shopListNameItem?.id!!)
+                    .removeObservers(this@ShopListActivity)
+                mainViewModel.getAllLibraryItems("%%")
                 return true
             }
 
@@ -166,9 +166,9 @@ class ShopListActivity : AppCompatActivity(), ShopListItemAdapter.Listener {
                 saveItem.isVisible = false
                 edItem?.removeTextChangedListener(textWatcher)
                 invalidateOptionsMenu()
-//                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
-//                edItem?.setText(" ")
-//                listItemObserver()
+                mainViewModel.libraryItems.removeObservers(this@ShopListActivity)
+                edItem?.setText(" ")
+                listItemObserver()
                 return true
             }
 
