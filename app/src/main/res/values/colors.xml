@@ -20,7 +20,9 @@
     <color name="grey">#727171</color>
     <color name="grey_light">#B1B1B1</color>
     <color name="blue_light">#56D2DD</color>
+    <color name="blue_light_bg">#C0E1E4</color>
     <color name="red_light">#FD4A92</color>
+    <color name="red_light_bg">#E3BFCD</color>
     <color name="blue_dark">#3699DA</color>
     <color name="red_dark">#BA0157</color>
 </resources>

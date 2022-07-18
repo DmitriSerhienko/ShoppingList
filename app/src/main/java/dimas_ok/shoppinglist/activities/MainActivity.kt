@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.android.billingclient.api.BillingClient
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -13,6 +14,7 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import dimas_ok.shoppinglist.R
+import dimas_ok.shoppinglist.billing.BillingManager
 import dimas_ok.shoppinglist.databinding.ActivityMainBinding
 import dimas_ok.shoppinglist.dialogs.NewListDialog
 import dimas_ok.shoppinglist.fragments.FragmentManager
@@ -28,17 +30,19 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     private var iAd: InterstitialAd? = null
     private var adShowCounter = 0
     private var adShowCounterMax = 10
+    private lateinit var pref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         defPref = PreferenceManager.getDefaultSharedPreferences(this)
         currentTheme = defPref.getString("theme_key", "Blue").toString()
         setTheme(getSelectedTheme())
         super.onCreate(savedInstanceState)
+        pref = getSharedPreferences(BillingManager.MAIN_PREF, MODE_PRIVATE)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         FragmentManager.setFragment(ShopListNamesFragment.newInstance(), this)
         setBottomNavListener()
-        loadInterAd()
+        if(!pref.getBoolean(BillingManager.REMOVE_ADS_KEY, false)) loadInterAd()
     }
 
     private fun loadInterAd() {

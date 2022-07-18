@@ -23,6 +23,7 @@
             />
         <Preference
             android:title="@string/remove_ads"
+            android:key="remove_ads_key"
             android:summary="@string/remove_ads_summery"
             android:icon="@drawable/ic_remove_ads"
             />
