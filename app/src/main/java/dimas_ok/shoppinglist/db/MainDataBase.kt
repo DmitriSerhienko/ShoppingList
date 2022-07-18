@@ -10,7 +10,9 @@ import dimas_ok.shoppinglist.entities.ShopListItem
 import dimas_ok.shoppinglist.entities.ShopListNameItem
 
 @Database (entities = [LibraryItem::class, NoteItem::class,
-    ShopListItem::class, ShopListNameItem::class], version = 1)
+    ShopListItem::class, ShopListNameItem::class], version = 1,
+    exportSchema = true
+)
 abstract class MainDataBase : RoomDatabase() {
     abstract fun getDao(): Dao
 
