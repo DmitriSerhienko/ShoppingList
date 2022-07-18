@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(), NewListDialog.Listener {
     }
 
     private fun showInterAd(adListener: AdListener) {
-        if (iAd != null && adShowCounter > adShowCounterMax) {
+        if (iAd != null && adShowCounter > adShowCounterMax && !pref.getBoolean(BillingManager.REMOVE_ADS_KEY, false)) {
             iAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     iAd = null
